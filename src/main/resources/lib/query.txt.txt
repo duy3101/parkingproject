@@ -1,0 +1,71 @@
+
+#mySql create table
+
+
+CREATE TABLE ParkingLot (
+    ID INT,
+    ParkingLotTypeID INT NOT NULL,
+    Name VARCHAR(20) NOT NULL,
+    PRIMARY KEY(ID),
+    FOREIGN KEY(ParkingLotTypeID) REFERENCES ParkingLotType(ID)
+);
+
+
+CREATE TABLE ParkingLotType (
+    ID INT,
+    Type VARCHAR(20) NOT NULL,
+    PRIMARY KEY(ID)
+);
+
+
+CREATE TABLE ParkingSpot (
+    ID INT,
+    ParkingSpotTypeID INT NOT NULL,
+    ParkingLotID INT NOT NULL,
+    LicensePlate VARCHAR(8),
+    SpotNumber INT NOT NULL,
+    Level INT NOT NULL,
+    PRIMARY KEY(ID),
+    FOREIGN KEY(ParkingSpotTypeID) REFERENCES ParkingSpotType(ID),
+    FOREIGN KEY(ParkingLotID) REFERENCES ParkingLot(ID),
+    FOREIGN KEY(LicensePlate) REFERENCES Vehicle(LicensePlate)
+);
+
+
+CREATE TABLE ParkingSpotType (
+    ID INT,
+    Type VARCHAR(10) NOT NULL,
+    PRIMARY KEY(ID)
+);
+
+
+CREATE TABLE Vehicle (
+    LicensePlate VARCHAR(8),
+    Color VARCHAR(15),
+    Manufacturer VARCHAR(30),
+    Model VARCHAR(30),
+    TypeID INT, 
+    PRIMARY KEY(LicensePlate)
+    FOREIGN KEY(TypeID) REFERENCES VehicleType(ID)
+);
+
+
+CREATE TABLE VehicleType (
+    ID INT,
+    Type VARCHAR(30),
+    PRIMARY KEY(ID)
+);
+
+
+CREATE TABLE Payment (
+    ID INT,
+    LicensePlate VARCHAR(8),
+    Duration INT NOT NULL,
+    StartTime DATETIME NOT NULL,
+
+    PRIMARY KEY(ID),
+    FOREIGN KEY(LicensePlate) REFERENCES Vehicle(LicensePlate)
+);
+
+
+
