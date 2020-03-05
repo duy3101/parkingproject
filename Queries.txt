@@ -1,0 +1,49 @@
+1. User opens GUI to view spots in the parking lot. We return to them a table that lists all vacant spots in the parking lot.
+
+SELECT SpotNumber, Level
+FROM ParkingSpot
+	JOIN ParkingLot ON (ParkingLot.ID = ParkingSPot.ParkingLotID)
+WHERE ParkingLot.Name = lotName AND LicensePlate IS null;
+
+2. User wants to filter available spots based on the parking spot type.
+   Through our filter, returns them a table that lists all the vacant spots of that type.
+
+SELECT SpotNumber, Level, ParkingSpotType.Type
+FROM ParkingSpot
+	JOIN ParkingSpotType ON (ParkingSpotType.ID = ParkingSpot.ParkingSpotTypeID)
+WHERE ParkingSpotType.Type = typeName AND LicensePlate IS null;
+
+3. User enters in license plate, color, manufacturer, model, and type into GUI.
+   We record and update the database accordingly. Returns if the data inputted is successful. 
+
+INSERT INTO Vehicle
+VALUES (plateNumber, color, manu, model, typeNum);
+
+4. User parks their car in a vacant spot.
+   Sensors record and update the database (simulated by manually entering data for the purpose of this project).
+
+UPDATE ParkingSpot
+SET ParkingSpot.LicensePlate = plateNumber
+WHERE ParkingSpot.SpotNumber = spotNumber AND ParkingLot.Name = lotName;
+
+INSERT INTO Payment
+VALUES ('', plateNumber, 0, dateTime('now'), False);
+
+5. User leaves their parking spot.
+   Sensors record and update the database (simulated by manually entering data for the purpose of this project)
+
+UPADTE ParkingSpot
+SET PakingSpot.LicensePlate = null
+WHERE ParkingSpot.SpotNumber = spotNumber AND ParkingLot.Name = lotName;
+
+-- Need to add an update here that will set the duration in payment
+
+6. User wants to view history of paid and unpaid payments by entering their license plate into the GUI.
+   We return to them a table that lists all of the different payments registered to their license plate.
+   (The payment itself is not covered under our project)
+
+7. User (the university) wants to find all overdue payments depending on a given date.
+   We return to them a table that lists all the payments that fall into this criteria.
+
+8. User (the university) wants to find the usage of each parking lot and parking spot type.
+   We return to them a table that lists usage rates of each parking lot and spot type.
