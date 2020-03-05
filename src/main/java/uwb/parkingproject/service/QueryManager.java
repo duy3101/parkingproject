@@ -1,4 +1,4 @@
-package uwb.parkingproject;
+package uwb.parkingproject.service;
 
 import java.sql.*;
 import java.util.Properties;

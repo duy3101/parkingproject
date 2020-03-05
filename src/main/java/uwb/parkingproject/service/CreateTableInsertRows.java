@@ -1,11 +1,11 @@
-package uwb.parkingproject;
+package uwb.parkingproject.service;
 
 import java.sql.*;
 import java.util.Properties;
 
 public class CreateTableInsertRows {
 
-	public static void main (String[] args)  throws Exception
+	public CreateTableInsertRows()  throws Exception
 	{
 		// Initialize connection variables.	
 		String host = "university-parking-winter-20.mysql.database.azure.com";
