@@ -1,9 +1,13 @@
 package uwb.parkingproject.service;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Properties;
+import uwb.parkingproject.model.Fruit;
 
 public class ReadTable {
+
+	private ArrayList<Fruit> fruitList = new ArrayList<>();
 
 	public ReadTable() throws Exception
 	{
@@ -38,26 +42,29 @@ public class ReadTable {
 		if (connection != null) 
 		{ 
 			System.out.println("Successfully created connection to database.");
-		
+			
 			// Perform some SQL queries over the connection.
 			try
 			{
-	
 				Statement statement = connection.createStatement();
 				ResultSet results = statement.executeQuery("SELECT * from inventory;");
 				while (results.next())
 				{
-					String outputString = 
-						String.format(
-							"Data row = (%s, %s, %s)",
-							results.getString(1),
-							results.getString(2),
-							results.getString(3));
-					System.out.println(outputString);
+
+					Fruit temp = new Fruit(results.getString(1), results.getString(2), results.getString(3));
+					fruitList.add(temp);
+					// String outputString = 
+					// 	String.format(
+					// 		"Data row = (%s, %s, %s)",
+					// 		results.getString(1),
+					// 		results.getString(2),
+					// 		results.getString(3));
+					// System.out.println(outputString);
 				}
 			}
 			catch (SQLException e)
 			{
+				System.out.println("TEST");
 				throw new SQLException("Encountered an error when executing given sql statement", e);
 			}		
 		}
@@ -65,5 +72,9 @@ public class ReadTable {
 			System.out.println("Failed to create connection to database.");	
 		}
 		System.out.println("Execution finished.");
+	}
+
+	public ArrayList<Fruit> getResult() {
+		return fruitList;
 	}
 }

@@ -1,6 +1,7 @@
 
 package uwb.parkingproject.controller;
 
+import java.util.ArrayList;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -11,7 +12,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import uwb.parkingproject.model.User;
+import uwb.parkingproject.model.*;
+import uwb.parkingproject.service.*;
 
 @Controller
 public class HomeController {
@@ -29,13 +31,29 @@ public class HomeController {
 
 		model.addAttribute("serverTime", formattedDate);
 
+        // try {
+        //     GenerateParking query = new GenerateParking();
+        // }
+        // catch (Exception e) {
+        //     System.out.println("Database connection problem");
+        // }
 		return "home";
 	}
 
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
 	public String user(@Validated User user, Model model) {
 		System.out.println("User Page Requested");
-		model.addAttribute("userName", user.getUserName());
+        model.addAttribute("userName", user.getUserName());
+
+        try {
+            ReadTable query = new ReadTable();
+            ArrayList<Fruit> fruitList = query.getResult();
+            model.addAttribute("fruitList", fruitList);
+        }
+        catch (Exception e) {
+            System.out.println("Database connection problem");
+        }
+        
 		return "user";
 	}
 }
