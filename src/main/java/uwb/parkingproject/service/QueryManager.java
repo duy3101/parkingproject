@@ -12,7 +12,7 @@ public class QueryManager {
     private Connection connection = null;
 
     public QueryManager() throws Exception {
-        try
+		try
 		{
 			String url = String.format("jdbc:mariadb://%s/%s", host, database);
 
@@ -30,15 +30,20 @@ public class QueryManager {
 		catch (SQLException e)
 		{
 			throw new SQLException("Failed to create connection to database.", e);
-        }
+		}
     }
 
     public Connection getConnection() {
         return connection;
     }
 
-    public void GetAvailbleSpotFromLot(String lot_name) {
-        
-    }
+    public void GetVacantSpotFromLot(String lot_name) {
+        // SELECT SpotNumber, Level
+		// FROM ParkingSpot
+		// 	JOIN ParkingLot ON (ParkingLot.ID = ParkingSPot.ParkingLotID)
+		// WHERE ParkingLot.Name = lotName AND LicensePlate IS null;
+	}
+	
+	
 
 }

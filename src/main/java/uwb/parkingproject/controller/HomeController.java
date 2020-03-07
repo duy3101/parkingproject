@@ -31,12 +31,6 @@ public class HomeController {
 
 		model.addAttribute("serverTime", formattedDate);
 
-        // try {
-        //     GenerateParking query = new GenerateParking();
-        // }
-        // catch (Exception e) {
-        //     System.out.println("Database connection problem");
-        // }
 		return "home";
 	}
 
@@ -44,8 +38,8 @@ public class HomeController {
 	public String user(@Validated User user, Model model) {
 		System.out.println("User Page Requested");
         model.addAttribute("userName", user.getUserName());
-
-        try {
+        
+		try {
             ReadTable query = new ReadTable();
             ArrayList<Fruit> fruitList = query.getResult();
             model.addAttribute("fruitList", fruitList);

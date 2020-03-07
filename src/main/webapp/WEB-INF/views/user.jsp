@@ -20,8 +20,8 @@
 
             <c:forEach items="${fruitList}" var="fruit">
                 <tr>
-                <td><c:out value = "${fruit.num}"/></td>
-                <td><c:out value = "${fruit.str}"/></td>
+                <td><c:out value = "${fruit.str2}"/></td>
+                <td><c:out value = "${fruit.str3}"/></td>
                 </tr>
             </c:forEach>
         </table>

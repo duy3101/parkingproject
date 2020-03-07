@@ -64,30 +64,43 @@ public class GenerateParking {
 
 
 				Statement statement = connection.createStatement();
+				PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO ParkingSpotType (Type) VALUES (?);");
+				
+				// for (int i = 0; i < parkingSpotTypeList.size(); i++) { 		
+				// 	System.out.println(parkingSpotTypeList.get(i));
+				// 	preparedStatement.setString(1, parkingSpotTypeList.get(i));
+				// 	preparedStatement.executeUpdate();
+				// }  
+				// System.out.println("Finished adding ParkingSpotType");
 
-				for (int i = 0; i < parkingSpotTypeList.size(); i++) { 		
-					System.out.println(parkingSpotTypeList.get(i));      
-					statement.execute(String.format("INSERT INTO ParkingSpotType (Type) VALUES (%s)", parkingSpotTypeList.get(i)));		
-				}  
-				System.out.println("Finished adding ParkingSpotType");
-
-
-				for (int i = 0; i < parkingLotTypeList.size(); i++) { 		      
-					statement.execute(String.format("INSERT INTO ParkingLotType (Type) VALUES (%s)", parkingLotTypeList.get(i)));		
+				preparedStatement = connection.prepareStatement("INSERT INTO ParkingLotType (Type) VALUES (?);");
+				for (int i = 0; i < parkingLotTypeList.size(); i++) { 
+					System.out.println(parkingLotTypeList.get(i));    
+					preparedStatement.setString(1, parkingLotTypeList.get(i));    
+					preparedStatement.executeUpdate();
 				}  
 				System.out.println("Finished adding ParkingLotType");
 
-
-				for (int i = 0; i < parkingLotNameList.size(); i++) { 		      
-					statement.execute(String.format("INSERT INTO ParkingLot (ParkingLotTypeID, Name) VALUES (%1$s, %2$d)", parkingLotNameList.get(i), 1));		
+				preparedStatement = connection.prepareStatement("INSERT INTO ParkingLot (ParkingLotTypeID, Name) VALUES (?, ?);");
+				for (int i = 0; i < parkingLotNameList.size(); i++) { 
+					System.out.println(parkingLotNameList.get(i));   
+					preparedStatement.setInt(1, 1);    
+					preparedStatement.setString(2, parkingLotNameList.get(i));
+					preparedStatement.executeUpdate();
 				}  
-				System.out.println("Finished adding ParkingLot");
+				 System.out.println("Finished adding ParkingLot");
 
+				preparedStatement = connection.prepareStatement("INSERT INTO ParkingSpot (ParkingSpotTypeID, ParkingLotID, SpotNumber, Level) VALUES (?, ?, ?, ?);");
 				for (int i = 1; i <= parkingLotNameList.size(); i++) { 		      
 					for (int j = 1; j < 3; j++) {	 	
 						for (int k = 1; k < 11; k++) {
-							statement.execute(String.format("INSERT INTO ParkingSpot (ParkingSpotTypeID, ParkingLotID, SpotNumber, Level) VALUES (%1$d, %2$d, %3$d, %4$d)", 
-							1, i, k, j));		
+							preparedStatement.setInt(1, 1);    
+							preparedStatement.setInt(2, i);    
+							preparedStatement.setInt(3, k);    
+							preparedStatement.setInt(4, j);    
+							preparedStatement.executeUpdate();
+							// statement.execute(String.format("INSERT INTO ParkingSpot (ParkingSpotTypeID, ParkingLotID, SpotNumber, Level) VALUES (%1$d, %2$d, %3$d, %4$d);", 
+							// 1, i, k, j));		
 
 						}	
 					}	      
