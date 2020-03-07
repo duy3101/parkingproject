@@ -104,3 +104,5 @@ FROM (
 	) AS Vacant
 WHERE Total.TypeName = Vacant.TypeName
 ORDER BY Total.TypeName;
+
+test
