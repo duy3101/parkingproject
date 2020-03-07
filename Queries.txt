@@ -2,8 +2,9 @@
 
 SELECT SpotNumber, Level
 FROM ParkingSpot
-	JOIN ParkingLot ON (ParkingLot.ID = ParkingSPot.ParkingLotID)
-WHERE ParkingLot.Name = lotName AND LicensePlate IS null;
+	JOIN ParkingLot ON (ParkingLot.ID = ParkingSpot.ParkingLotID)
+WHERE ParkingLot.Name = lotName AND LicensePlate IS null
+ORDERY BY SpotNumber, Level;
 
 2. User wants to filter available spots based on the parking spot type.
    Through our filter, returns them a table that lists all the vacant spots of that type.
@@ -11,7 +12,8 @@ WHERE ParkingLot.Name = lotName AND LicensePlate IS null;
 SELECT SpotNumber, Level, ParkingSpotType.Type
 FROM ParkingSpot
 	JOIN ParkingSpotType ON (ParkingSpotType.ID = ParkingSpot.ParkingSpotTypeID)
-WHERE ParkingSpotType.Type = typeName AND LicensePlate IS null;
+WHERE ParkingSpotType.Type = typeName AND LicensePlate IS null
+ORDER BY SpotNumber, Level;
 
 3. User enters in license plate, color, manufacturer, model, and type into GUI.
    We record and update the database accordingly. Returns if the data inputted is successful. 
@@ -36,14 +38,69 @@ UPADTE ParkingSpot
 SET PakingSpot.LicensePlate = null
 WHERE ParkingSpot.SpotNumber = spotNumber AND ParkingLot.Name = lotName;
 
--- Need to add an update here that will set the duration in payment
+-- Updates duration in payment (syntax might be slightly off), NEEDS TO BE CREATED WITH TABLES (before interactions)
+CREATE TRIGGER ParkingSpotPayment AFTER
+	UPDATE ON ParkingSpot FOR EACH ROW
+	BEGIN
+		IF (ParkingSpot.LiscensePlate = null) THEN
+		UPDATE Payment
+		SET duration = DATE_SUB(startTime, INTERVAL dateTime('now') MINUTE)
+		WHERE ParkingSpot.SpotNumber = spotNumber AND ParkingLot.Name = lotName;
+	END;
 
-6. User wants to view history of paid and unpaid payments by entering their license plate into the GUI.
+6. User wants to view unpaid payments by entering their license plate into the GUI.
    We return to them a table that lists all of the different payments registered to their license plate.
    (The payment itself is not covered under our project)
 
-7. User (the university) wants to find all overdue payments depending on a given date.
+SELECT StartTime, Duration, Status
+FROM Payment
+WHERE LicensePlate = plateNumber
+ORDER BY startTime;
+
+7. User (the university) wants to find all payments that have not been paid seven or more days after the parking start time. 
    We return to them a table that lists all the payments that fall into this criteria.
 
-8. User (the university) wants to find the usage of each parking lot and parking spot type.
-   We return to them a table that lists usage rates of each parking lot and spot type.
+SELECT LicensePlate, Duration, StartTime, Status
+FROM Payment
+WHERE (DATE_ADD(startTime, INTERVAL 7 DAY)) < datetime('now')
+ORDER BY startTime;
+
+
+8. User (the university) wants to find the current percentage of spots filled in each parking lot.
+
+SELECT Total.ParkingLotName, ((1.0 * Vacant.Vacancy) / (1.0 * Total.TotalSpots)) * 100 AS Percentage
+FROM (
+	SELECT COUNT(*) as TotalSpots, ParkingLot.name as ParkingLotName
+	FROM ParkingSpot
+		JOIN ParkingLot ON (ParkingLot.ID = ParkingSpot.ParkingLotID)
+	GROUP BY ParkingLot.name
+	) AS Total
+	JOIN (
+	SELECT COUNT(*) as Vacancy,ParkingLot.name as ParkingLotName
+	FROM ParkingSpot
+		JOIN ParkingLot ON (ParkingLot.ID = ParkingSpot.ParkingLotID)
+	WHERE LicensePlate IS null
+	GROUP BY ParkingLot.name
+	) AS Vacant
+WHERE Total.ParkingLotName = Vacant.ParkingLotName
+ORDER BY Total.ParkingLotName;
+
+
+9. User (the university) wants to find the current percentage of spots filled for each parking spot type.
+
+SELECT Total.TypeName, ((1.0 * Vacant.Vacancy) / (1.0 * Total.TotalSpots)) * 100 AS Percentage
+FROM (
+	SELECT COUNT(*) as TotalSpots, ParkingSpotType.Type as TypeName
+	FROM ParkingSpot
+		JOIN ParkingSpotType ON (ParkingSpot.ParkingSpotTypeID = ParkingSpotType.ID)
+	GROUP BY ParkingSpotType.ID
+	) AS Total
+	JOIN (
+	SELECT COUNT(*) as Vacancy, ParkingSpotType.Type as TypeName
+	FROM ParkingSpot
+		JOIN ParkingSpotType ON (ParkingSpot.ParkingSpotTypeID = ParkingSpotType.ID)
+	WHERE LicensePlate IS null
+	GROUP BY ParkingSpotType.ID
+	) AS Vacant
+WHERE Total.TypeName = Vacant.TypeName
+ORDER BY Total.TypeName;
