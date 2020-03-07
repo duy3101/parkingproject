@@ -44,6 +44,9 @@ public class QueryManager {
 		// WHERE ParkingLot.Name = lotName AND LicensePlate IS null;
 	}
 	
+	public String test () {
+		return "talking from QueryManager";
+	}
 	
 
 }
