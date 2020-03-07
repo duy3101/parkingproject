@@ -4,7 +4,7 @@ SELECT SpotNumber, Level
 FROM ParkingSpot
 	JOIN ParkingLot ON (ParkingLot.ID = ParkingSpot.ParkingLotID)
 WHERE ParkingLot.Name = lotName AND LicensePlate IS null
-ORDERY BY SpotNumber, Level;
+ORDER BY SpotNumber, Level;
 
 2. User wants to filter available spots based on the parking spot type.
    Through our filter, returns them a table that lists all the vacant spots of that type.

@@ -40,7 +40,28 @@ public class QueryManager {
     public ResultSet GetVacantSpotFromLot(String lot_name) throws Exception{
 
 
-        String query = String.format("SELECT SpotNumber, Level FROM ParkingSpot JOIN ParkingLot ON (ParkingLot.ID = ParkingSPot.ParkingLotID WHERE ParkingLot.Name = %s AND LicensePlate IS null;", lot_name);
+        String query = String.format("SELECT SpotNumber, Level FROM ParkingSpot JOIN ParkingLot ON (ParkingLot.ID = ParkingSpot.ParkingLotID) WHERE ParkingLot.Name = %s AND LicensePlate IS null ORDER BY SpotNumber, Level;", lot_name);
+		ResultSet results;
+
+		try
+			{
+				Statement statement = this.connection.createStatement();
+				results = statement.executeQuery(query);
+			}
+		catch (SQLException e)
+		{
+			throw new SQLException("Encountered an error when executing given sql statement", e);
+		}		
+
+
+		return results;
+
+	}
+
+	public ResultSet GetVacantSpotFromType(String lot_name) throws Exception{
+
+
+        String query = String.format("SELECT SpotNumber, Level, ParkingSpotType.Type FROM ParkingSpot JOIN ParkingSpotType ON (ParkingSpotType.ID = ParkingSpot.ParkingSpotTypeID) WHERE ParkingSpotType.Type = %s AND LicensePlate IS null ORDER BY SpotNumber, Level;", type_name);
 		ResultSet results;
 
 		try
@@ -58,6 +79,27 @@ public class QueryManager {
 
 	}
 	
+	public ResultSet (String lot_name) throws Exception{
+
+
+        String query = String.format("", lot_name);
+		ResultSet results;
+
+		try
+			{
+				Statement statement = this.connection.createStatement();
+				results = statement.executeQuery(query);
+			}
+		catch (SQLException e)
+		{
+			throw new SQLException("Encountered an error when executing given sql statement", e);
+		}		
+
+
+		return results;
+
+	}
+
 	public String test () {
 		return "talking from QueryManager";
 	}
