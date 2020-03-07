@@ -37,11 +37,25 @@ public class QueryManager {
         return connection;
     }
 
-    public void GetVacantSpotFromLot(String lot_name) {
-        // SELECT SpotNumber, Level
-		// FROM ParkingSpot
-		// 	JOIN ParkingLot ON (ParkingLot.ID = ParkingSPot.ParkingLotID)
-		// WHERE ParkingLot.Name = lotName AND LicensePlate IS null;
+    public ResultSet GetVacantSpotFromLot(String lot_name) throws Exception{
+
+
+        String query = String.format("SELECT SpotNumber, Level FROM ParkingSpot JOIN ParkingLot ON (ParkingLot.ID = ParkingSPot.ParkingLotID WHERE ParkingLot.Name = %s AND LicensePlate IS null;", lot_name);
+		ResultSet results;
+
+		try
+			{
+				Statement statement = this.connection.createStatement();
+				results = statement.executeQuery(query);
+			}
+		catch (SQLException e)
+		{
+			throw new SQLException("Encountered an error when executing given sql statement", e);
+		}		
+
+
+		return results;
+
 	}
 	
 	public String test () {
