@@ -4,7 +4,7 @@ SELECT SpotNumber, Level
 FROM ParkingSpot
 	JOIN ParkingLot ON (ParkingLot.ID = ParkingSpot.ParkingLotID)
 WHERE ParkingLot.Name = lotName AND LicensePlate IS null
-ORDER BY SpotNumber, Level;
+ORDERY BY SpotNumber, Level;
 
 2. User wants to filter available spots based on the parking spot type.
    Through our filter, returns them a table that lists all the vacant spots of that type.
@@ -26,7 +26,11 @@ VALUES (plateNumber, color, manu, model, typeNum);
 
 UPDATE ParkingSpot
 SET ParkingSpot.LicensePlate = plateNumber
-WHERE ParkingSpot.SpotNumber = spotNumber AND ParkingLot.Name = lotName;
+WHERE ParkingSpot.SpotNumber = spotNumber AND ParkingSpot.ParkingLotID IN 
+	(SELECT ParkingLot.ID
+	 FROM ParkingLot
+	 WHERE ParkingLot.name = lotName
+	 ); 
 
 INSERT INTO Payment
 VALUES ('', plateNumber, 0, dateTime('now'), False);
@@ -36,7 +40,11 @@ VALUES ('', plateNumber, 0, dateTime('now'), False);
 
 UPADTE ParkingSpot
 SET PakingSpot.LicensePlate = null
-WHERE ParkingSpot.SpotNumber = spotNumber AND ParkingLot.Name = lotName;
+WHERE ParkingSpot.SpotNumber = spotNumber AND ParkingSpot.ParkingLotID IN 
+	(SELECT ParkingLot.ID
+	 FROM ParkingLot
+	 WHERE ParkingLot.name = lotName
+	 ); 
 
 -- Updates duration in payment (syntax might be slightly off), NEEDS TO BE CREATED WITH TABLES (before interactions)
 CREATE TRIGGER ParkingSpotPayment AFTER
@@ -105,4 +113,5 @@ FROM (
 WHERE Total.TypeName = Vacant.TypeName
 ORDER BY Total.TypeName;
 
-test
+
+
