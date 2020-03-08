@@ -63,7 +63,6 @@ public class GenerateParking {
 				System.out.println("check");
 
 
-				Statement statement = connection.createStatement();
 				PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO ParkingSpotType (Type) VALUES (?);");
 				
 				// for (int i = 0; i < parkingSpotTypeList.size(); i++) { 		

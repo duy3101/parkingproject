@@ -15,8 +15,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>User Home Page</title>
     </head>
-<body>
-    <h3>Hi ${userName}</h3>
+    <body>
+    
+    <h3>Hi ${ID}</h3>
         <table border = "1" width = "50%">
             <tr>
                 <th>Fruit name</th>
@@ -30,5 +31,24 @@
                 </tr>
             </c:forEach>
         </table>
+
+        <form name="f1" method="post">
+        <select name="clr">
+           <option>Red</option>
+           <option>Blue</option>   
+           <option>Green</option>
+           <option>Pink</option>
+        </select>
+        <input type="submit" name="submit" value="Select Color"/>
+        </form>
+        <%-- To display selected value from dropdown list. --%>
+        <% 
+            String s = request.getParameter("clr");
+            if (s !=null )
+            {
+                System.out.println("Selected Color is : "+s);
+            }
+        %>
+
     </body>
 </html>

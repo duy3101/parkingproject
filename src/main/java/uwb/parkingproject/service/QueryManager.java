@@ -82,7 +82,7 @@ public class QueryManager {
 	public ResultSet EnterVehicleInfo(String plateNumber, String color, String manu, String model, int typeNum) throws Exception{
 
 
-        String query = String.format("INSERT INTO Vehicle VALUES (%1$s, %2$s, %3$s, %4$s, %x)", plateNumber, color, nau, model, typeNum);
+        String query = String.format("INSERT INTO Vehicle VALUES (%1$s, %2$s, %3$s, %4$s, %x)", plateNumber, color, manu, model, typeNum);
 		ResultSet results;
 
 		try

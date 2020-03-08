@@ -37,8 +37,13 @@ public class HomeController {
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
 	public String user(@Validated User user, Model model) {
 		System.out.println("User Page Requested");
-        model.addAttribute("userName", user.getUserName());
-        
+        model.addAttribute("ID", user.getID());
+		
+		System.out.println(user.getPlate());
+		System.out.println(user.getColor());
+		System.out.println(user.getManu());
+		System.out.println(user.getModel());
+
 		try {
             ReadTable query = new ReadTable();
             ArrayList<Fruit> fruitList = query.getResult();
