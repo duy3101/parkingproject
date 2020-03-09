@@ -42,6 +42,16 @@
         </select>
         <input type="submit" name="submit" value="Select Garage"/>
         </form>
+
+        <form action="vacantspotbytype" method="post">
+        <label for="ParkingSpotType">Find available spot from type:</label>
+        <select name="ParkingSpotType", id="ParkingSpotType">
+            <option value="Normal">Normal</option>
+            <option value="Carpool">Carpool</option>
+            <option value="Handicapped">Handicapped</option>
+        </select>
+        <input type="submit" name="submit" value="Select Type"/>
+        </form>
         
     </body>
 </html>

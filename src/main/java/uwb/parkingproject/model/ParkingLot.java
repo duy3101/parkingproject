@@ -12,5 +12,6 @@ public class ParkingLot {
 
 	public void setParkingLotName(String ParkingLotName) {
 		this.ParkingLotName = ParkingLotName;
-    }
+	}
+	
 }

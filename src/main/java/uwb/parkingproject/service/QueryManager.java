@@ -75,26 +75,33 @@ public class QueryManager {
 
 	}
 
-	public ResultSet GetVacantSpotFromType(String type_name) throws Exception{
+	public ArrayList<ReturnType> GetVacantSpotFromType(String type_name) throws Exception{
 
 
-        String query = String.format("SELECT SpotNumber, Level, ParkingSpotType.Type FROM ParkingSpot JOIN ParkingSpotType ON (ParkingSpotType.ID = ParkingSpot.ParkingSpotTypeID) WHERE ParkingSpotType.Type = %s AND LicensePlate IS null ORDER BY SpotNumber, Level;", type_name);
-		ResultSet results;
+        String query = String.format("SELECT SpotNumber, Level, ParkingSpotType.Type FROM ParkingSpot JOIN ParkingSpotType ON (ParkingSpotType.ID = ParkingSpot.ParkingSpotTypeID) WHERE ParkingSpotType.Type = \"%s\" AND LicensePlate IS null ORDER BY SpotNumber, Level;", type_name);
+		
+
+		ArrayList<ReturnType> return_table = new ArrayList<>();;
 
 		try
 		{
 			Statement statement = this.connection.createStatement();
-			results = statement.executeQuery(query);
+			ResultSet results = statement.executeQuery(query);
+			while (results.next())
+			{
+				ReturnType temp = new ReturnType(results.getString(1), results.getString(2), results.getString(3));
+				return_table.add(temp);
+			}
+			return return_table;
+
 		}
 		catch (SQLException e)
 		{
 			throw new SQLException("Encountered an error when executing given sql statement", e);
-		}		
-
-
-		return results;
-
+		}	
+			
 	}
+
 	
 	public ResultSet EnterVehicleInfo(String plateNumber, String color, String manu, String model, int typeNum) throws Exception{
 
