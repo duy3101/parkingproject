@@ -1,13 +1,22 @@
 package uwb.parkingproject.model;
 
 public class User {
-	
+
+	private String Name;
 	private String ID;
 	private String Plate;
 	private String Color;
 	private String Manu;
 	private String Model;
 	
+
+	public String getName() {
+		return Name;
+	}
+
+	public void setName(String Name) {
+		this.Name = Name;
+	}
 
 	public String getID() {
 		return ID;

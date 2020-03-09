@@ -1,7 +1,12 @@
+
+
 package uwb.parkingproject.service;
 
 import java.sql.*;
 import java.util.Properties;
+import java.util.ArrayList;
+import uwb.parkingproject.model.ReturnType;
+
 
 public class QueryManager {
 
@@ -37,24 +42,36 @@ public class QueryManager {
         return connection;
     }
 
-    public ResultSet GetVacantSpotFromLot(String lot_name) throws Exception{
+	// public ArrayList<ReturnType> ResultSetToArrayList(ResultSet set, int num_com) {
+	// 	ArrayList<ReturnType> res = new ArrayList<>();
+	
+	// 	return res;
+	// }
+
+    public ArrayList<ReturnType> GetVacantSpotFromLot(String lot_name) throws Exception{
 
 
-        String query = String.format("SELECT SpotNumber, Level FROM ParkingSpot JOIN ParkingLot ON (ParkingLot.ID = ParkingSpot.ParkingLotID) WHERE ParkingLot.Name = %s AND LicensePlate IS null ORDER BY SpotNumber, Level;", lot_name);
-		ResultSet results;
+		String query = String.format("SELECT SpotNumber, Level FROM ParkingSpot JOIN ParkingLot ON (ParkingLot.ID = ParkingSpot.ParkingLotID) WHERE ParkingLot.Name = \"%s\" AND LicensePlate IS null ORDER BY SpotNumber, Level;", lot_name);
+
+
+		ArrayList<ReturnType> return_table = new ArrayList<>();;
 
 		try
+		{
+			Statement statement = this.connection.createStatement();
+			ResultSet results = statement.executeQuery(query);
+			while (results.next())
 			{
-				Statement statement = this.connection.createStatement();
-				results = statement.executeQuery(query);
+				ReturnType temp = new ReturnType(results.getString(1), results.getString(2));
+				return_table.add(temp);
 			}
+			return return_table;
+		}
 		catch (SQLException e)
 		{
 			throw new SQLException("Encountered an error when executing given sql statement", e);
+
 		}		
-
-
-		return results;
 
 	}
 
@@ -65,10 +82,10 @@ public class QueryManager {
 		ResultSet results;
 
 		try
-			{
-				Statement statement = this.connection.createStatement();
-				results = statement.executeQuery(query);
-			}
+		{
+			Statement statement = this.connection.createStatement();
+			results = statement.executeQuery(query);
+		}
 		catch (SQLException e)
 		{
 			throw new SQLException("Encountered an error when executing given sql statement", e);

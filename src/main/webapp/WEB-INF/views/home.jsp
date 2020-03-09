@@ -10,6 +10,8 @@
 
 <form action="user" method="post">
 
+    <label for="Name">Name:</label>
+    <input type="text" name="Name"><br> 
     <label for="ID">Student ID:</label>
     <input type="text" name="ID"><br> 
     <label for="Plate">Plate Number:</label>

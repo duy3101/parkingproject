@@ -9,6 +9,7 @@
     System.out.println(manager.test());
 %> 
 
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "https://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
@@ -32,23 +33,15 @@
             </c:forEach>
         </table>
 
-        <form name="f1" method="post">
-        <select name="clr">
-           <option>Red</option>
-           <option>Blue</option>   
-           <option>Green</option>
-           <option>Pink</option>
+        <form action="vacantspot" method="post">
+        <label for="ParkingLotName">Find available spot from garage:</label>
+        <select name="ParkingLotName", id="ParkingLotName">
+            <option value="North">North</option>
+            <option value="South">South</option>
+            <option value="Discovery">Discovery</option>
         </select>
-        <input type="submit" name="submit" value="Select Color"/>
+        <input type="submit" name="submit" value="Select Garage"/>
         </form>
-        <%-- To display selected value from dropdown list. --%>
-        <% 
-            String s = request.getParameter("clr");
-            if (s !=null )
-            {
-                System.out.println("Selected Color is : "+s);
-            }
-        %>
-
+        
     </body>
 </html>
