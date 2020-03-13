@@ -9,10 +9,8 @@
 <P>The time on the server is ${serverTime}.</p>
 
 <form action="admin" method="post">
-    <input type="submit" value="Admin">
+    <input type="Submit" value="Admin" name="Admin">
 </form>
-
-
 
 <form action="user" method="post">
 

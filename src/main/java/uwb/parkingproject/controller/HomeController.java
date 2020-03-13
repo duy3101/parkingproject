@@ -38,6 +38,21 @@ public class HomeController {
 		return "home";
 	}
 
+
+
+	@RequestMapping(value = "/admin", method = RequestMethod.POST)
+	public String admin(Model model) {
+		
+		// university all payments that have not been paid in >=7 days
+
+		// university can find current % of spots filled in each parking lot
+
+		// university can find current % of spots filled in each spot type
+
+	
+		return "admin";
+	}
+
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
 	public String user(@Validated User user, Model model) {
 		System.out.println("User Page Requested");
