@@ -44,7 +44,7 @@ public class HomeController {
 	public String admin(Model model) {
 		
 		// university all payments that have not been paid in >=7 days
-
+		
 		// university can find current % of spots filled in each parking lot
 
 		// university can find current % of spots filled in each spot type
