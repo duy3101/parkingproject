@@ -11,7 +11,7 @@
     </head>
     <body>
     
-    <h3>Hi ${ID}</h3>
+    <h3>Hi ${Name}</h3>
     <h4>${type_name}</h4>
 
     <table border = "1" width = "50%">

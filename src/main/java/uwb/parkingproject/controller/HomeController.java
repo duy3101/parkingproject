@@ -1,9 +1,6 @@
 
 package uwb.parkingproject.controller;
 
-import java.sql.*;
-
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.text.DateFormat;
 import java.util.Date;
@@ -15,7 +12,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import uwb.parkingproject.model.*;
 import uwb.parkingproject.service.*;
@@ -46,19 +42,36 @@ public class HomeController {
 	public String user(@Validated User user, Model model) {
 		System.out.println("User Page Requested");
 
-		model.addAttribute("ID", user.getID());
+		//  EnterVehicleInfo, update database
+		
+		this.user = user;
+
+		model.addAttribute("Name", this.user.getName());
+
 		model.addAttribute("Plate", user.getPlate());
 		ParkingLot find_spot_by_lot = new ParkingLot();
 		model.addAttribute("ParkingLot", find_spot_by_lot);
 		ParkingLot2 find_spot_by_type = new ParkingLot2();
 		model.addAttribute("ParkingLot2", find_spot_by_type);
 
-		this.user = user;
+	
+		// System.out.println(user.getPlate());
+		// System.out.println(user.getColor());
+		// System.out.println(user.getManu());
+		// System.out.println(user.getModel());
+
+
+		//  EnterVehicleInfo, update database
+		try {
+			QueryManager manager = new QueryManager();
+			int car_type_to_int = manager.CarTypeToInt(user.getCarType());
+			manager.EnterVehicleInfo(user.getPlate(), user.getColor(), user.getManu(), user.getModel(), car_type_to_int);
+		}
+		catch (Exception e) {
+            System.out.println("Fail to add vehicle info");
+		}
 		
-		System.out.println(user.getPlate());
-		System.out.println(user.getColor());
-		System.out.println(user.getManu());
-		System.out.println(user.getModel());
+
 
 
 		try {
@@ -75,7 +88,7 @@ public class HomeController {
 
 	@RequestMapping(value = "/vacantspot", method = RequestMethod.POST)
 	public String vacantspot(@ModelAttribute("ParkingLot") ParkingLot find_spot_by_lot, Model model) {
-		model.addAttribute("ID", this.user.getID());
+		model.addAttribute("Name", this.user.getName());
 
 		System.out.println(find_spot_by_lot.getParkingLotName());
 
@@ -99,7 +112,9 @@ public class HomeController {
 
 	@RequestMapping(value = "/vacantspotbytype", method = RequestMethod.POST)
 	public String vacantspotbytype(@ModelAttribute("ParkingLot2") ParkingLot2 find_spot_by_type, Model model) {
-		model.addAttribute("ID", this.user.getID());
+
+		model.addAttribute("Name", this.user.getName());
+
 		System.out.println(find_spot_by_type.getParkingSpotType());
 
 		String type_name = find_spot_by_type.getParkingSpotType();

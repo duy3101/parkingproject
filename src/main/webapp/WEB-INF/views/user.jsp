@@ -18,7 +18,7 @@
     </head>
     <body>
     
-    <h3>Hi ${ID}</h3>
+    <h3>Hi ${Name}</h3>
         <table border = "1" width = "50%">
             <tr>
                 <th>Fruit name</th>

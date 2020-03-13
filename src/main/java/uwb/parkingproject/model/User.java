@@ -3,11 +3,13 @@ package uwb.parkingproject.model;
 public class User {
 
 	private String Name;
-	private String ID;
+
 	private String Plate;
 	private String Color;
 	private String Manu;
 	private String Model;
+	private String ParkingType;
+	private String CarType;
 	
 
 	public String getName() {
@@ -16,14 +18,6 @@ public class User {
 
 	public void setName(String Name) {
 		this.Name = Name;
-	}
-
-	public String getID() {
-		return ID;
-	}
-
-	public void setID(String ID) {
-		this.ID = ID;
 	}
 
 	public String getPlate() {
@@ -57,4 +51,22 @@ public class User {
 	public void setModel(String Model) {
 		this.Model = Model;
 	}
+
+	public String getParkingType() {
+		return ParkingType;
+	}
+
+	public void setParkingType(String ParkingType) {
+		this.ParkingType = ParkingType;
+	}
+
+	public String getCarType() {
+		return CarType;
+	}
+
+	public void setCarType(String CarType) {
+		this.CarType = CarType;
+	}
+
+
 }

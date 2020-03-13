@@ -54,7 +54,7 @@ public class QueryManager {
 		String query = String.format("SELECT SpotNumber, Level FROM ParkingSpot JOIN ParkingLot ON (ParkingLot.ID = ParkingSpot.ParkingLotID) WHERE ParkingLot.Name = \"%s\" AND LicensePlate IS null ORDER BY SpotNumber, Level;", lot_name);
 
 
-		ArrayList<ReturnType> return_table = new ArrayList<>();;
+		ArrayList<ReturnType> return_table = new ArrayList<>();
 
 		try
 		{
@@ -81,7 +81,7 @@ public class QueryManager {
         String query = String.format("SELECT SpotNumber, Level, ParkingSpotType.Type FROM ParkingSpot JOIN ParkingSpotType ON (ParkingSpotType.ID = ParkingSpot.ParkingSpotTypeID) WHERE ParkingSpotType.Type = \"%s\" AND LicensePlate IS null ORDER BY SpotNumber, Level;", type_name);
 		
 
-		ArrayList<ReturnType> return_table = new ArrayList<>();;
+		ArrayList<ReturnType> return_table = new ArrayList<>();
 
 		try
 		{
@@ -103,24 +103,23 @@ public class QueryManager {
 	}
 
 	
-	public ResultSet EnterVehicleInfo(String plateNumber, String color, String manu, String model, int typeNum) throws Exception{
+	public int EnterVehicleInfo(String plateNumber, String color, String manu, String model, int typeNum) throws Exception{
 
-
-        String query = String.format("INSERT INTO Vehicle VALUES (%1$s, %2$s, %3$s, %4$s, %x)", plateNumber, color, manu, model, typeNum);
-		ResultSet results;
+		System.out.println(plateNumber + " " + color + " " +manu + " " + model + " " +typeNum);
+        String query = String.format("INSERT INTO Vehicle VALUES (\"%1$s\", \"%2$s\", \"%3$s\", \"%4$s\", %5$d);", plateNumber, color, manu, model, typeNum);
+		System.out.println(query);
 
 		try
-			{
-				Statement statement = this.connection.createStatement();
-				results = statement.executeQuery(query);
-			}
+		{
+			Statement statement = this.connection.createStatement();
+			int result = statement.executeUpdate(query);
+			return result;
+
+		}
 		catch (SQLException e)
 		{
 			throw new SQLException("Encountered an error when executing given sql statement", e);
 		}		
-
-
-		return results;
 
 	}
 
@@ -129,7 +128,7 @@ public class QueryManager {
 	public ResultSet ParkCar(String plateNumber, int spotNumber, String lotName) throws Exception{
 
 
-        String query = String.format("UPDATE ParkingSpot SET ParkingSpot.LicensePlate = %1$s WHERE ParkingSpot.SpotNumber = %x AND ParkingSpot.ParkingLotID IN (SELECT ParkingLot.ID FROM ParkingLot WHERE ParkingLot.name = %2$s); ", plateNumber, spotNumber, lotName);
+        String query = String.format("UPDATE ParkingSpot SET ParkingSpot.LicensePlate = \"%1$s\" WHERE ParkingSpot.SpotNumber = \"%2$d\" AND ParkingSpot.ParkingLotID IN (SELECT ParkingLot.ID FROM ParkingLot WHERE ParkingLot.name = \"%3$s\"); ", plateNumber, spotNumber, lotName);
 		String query2 = String.format("INSERT INTO Payment VALUES ('', %s, 0, dateTime('now'), False);", plateNumber);
         ResultSet results;
 
@@ -257,11 +256,30 @@ public class QueryManager {
 
 	}
 
-	
-	
 	public String test () {
 		return "talking from QueryManager";
 	}
 	
+	public int CarTypeToInt (String type) {
+	
+		if (type.equals("Sedan")) {
+			return 1;
+		}
+		else if (type.equals("Truck")) {
+			return 2;
+		}
+		else if (type.equals("Compact")) {
+			return 3;
+		}
+		else if (type.equals("SUV")) {
+			return 4;
+		}
+		else if (type.equals("Hybird")) {
+			return 5;
+		}
+		else {
+			return 6; // motocycle
+		}
+	}
 
 }
