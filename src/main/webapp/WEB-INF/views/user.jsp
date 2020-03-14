@@ -19,19 +19,28 @@
     <body>
     
     <h3>Hi ${Name}</h3>
-        <table border = "1" width = "50%">
+        <label for="ParkedCarTable">Current Parked Car Table</label>
+        <table border = "1" width = "50%" name = "ParkedCarTable">
             <tr>
-                <th>Fruit name</th>
-                <th>Quanity</th>
+                <th>Start Time</th>
+                <th>Duration</th>
+                <th>Status</th>
             </tr>
 
-            <c:forEach items="${fruitList}" var="fruit">
+            <c:forEach items="${parked_list}" var="row">
                 <tr>
-                <td><c:out value = "${fruit.str2}"/></td>
-                <td><c:out value = "${fruit.str3}"/></td>
+                <td><c:out value = "${row.str1}"/></td>
+                <td><c:out value = "${row.str2}"/></td>
+                <td><c:out value = "${row.str3}"/></td>
                 </tr>
             </c:forEach>
         </table>
+
+        <form action="leave_spot" method="post">
+         <button type="submit">Click here to leave spot</button>
+        </form>
+
+
 
         <form action="vacantspot" method="post">
         <label for="ParkingLotName">Find available spot from garage:</label>

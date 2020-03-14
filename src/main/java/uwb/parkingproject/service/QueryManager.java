@@ -151,10 +151,10 @@ public class QueryManager {
 	}
 
 	// Needs to have created trigger as well to work correctly 
-	public int LeaveSpot(String plateNumber, int spotNumber, int level, String lotName) throws Exception{
+	public int LeaveSpot(String plateNumber) throws Exception{
 
 
-		String query = String.format("UPADTE ParkingSpot SET PakingSpot.LicensePlate = null WHERE ParkingSpot.SpotNumber = \"%1$d\" AND ParkingSpot.Level = \"%2$d\" AND ParkingSpot.ParkingLotID IN  (SELECT ParkingLot.ID FROM ParkingLot WHERE ParkingLot.name = \"%3$s\"); ", spotNumber, level, lotName);
+		String query = String.format("UPDATE ParkingSpot SET ParkingSpot.LicensePlate = null WHERE ParkingSpot.LicensePlate = \"%1$s\";", plateNumber);
 		String query2 = String.format("UPDATE Payment SET duration = TIMESTAMPDIFF(MINUTE,StartTime, NOW()) WHERE Payment.LicensePlate = \"%s\" AND Payment.Duration = 0;", plateNumber);
 		
 		System.out.println(query);
@@ -174,25 +174,30 @@ public class QueryManager {
 		}		
 	}
 
-	public ResultSet GetPayments(String plateNumber) throws Exception{
+	public ArrayList<ReturnType> GetParkedInfo(String plateNumber) throws Exception{
 
 
-        String query = String.format("SELECT StartTime, Duration, Status FROM Payment WHERE LicensePlate = %s ORDER BY startTime;", plateNumber);
+        String query = String.format("SELECT ParkingLot.Name, ParkingSpot.SpotNumber, ParkingSpot.Level FROM ParkingSpot JOIN ParkingLot ON (ParkingSpot.ParkingLotID = ParkingLot.ID) WHERE ParkingSpot.LicensePlate = \"%s\";", plateNumber);
 		ResultSet results;
 		
+		ArrayList<ReturnType> return_table = new ArrayList<>();
+
 		try
 			{
 				Statement statement = this.connection.createStatement();
 				results = statement.executeQuery(query);
+
+				while (results.next())
+				{
+					ReturnType temp = new ReturnType(results.getString(1), results.getString(2), results.getString(3));
+					return_table.add(temp);
+				}
+				return return_table;
 			}
 		catch (SQLException e)
 		{
 			throw new SQLException("Encountered an error when executing given sql statement", e);
 		}		
-
-
-		return results;
-
 	}
 
 	// Query with no parameters, might have issues

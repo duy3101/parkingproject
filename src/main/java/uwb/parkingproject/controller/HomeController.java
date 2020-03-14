@@ -86,19 +86,32 @@ public class HomeController {
             System.out.println("Fail to add vehicle info");
 		}
 		
-
-
-
 		try {
-            ReadTable query = new ReadTable();
-            ArrayList<Fruit> fruitList = query.getResult();
-            model.addAttribute("fruitList", fruitList);
+			QueryManager manager = new QueryManager();
+			ArrayList<ReturnType> return_list = manager.GetParkedInfo(this.user.getPlate());
+			model.addAttribute("parked_list", return_list);
         }
         catch (Exception e) {
-            System.out.println("Database connection problem");
+            System.out.println("Fail to find vehicle parked info");
         }
         
 		return "user";
+	}
+
+
+	@RequestMapping(value = "/leave_spot", method = RequestMethod.POST)
+	public String leave_spot(Model model) {
+		
+		model.addAttribute("Name", this.user.getName());
+
+		try {
+			QueryManager manager = new QueryManager();
+			manager.LeaveSpot(this.user.getPlate());
+		}
+		catch (Exception e) {
+			System.out.println("Database connection problem");
+        }
+		return "leave_spot";
 	}
 
 	@RequestMapping(value = "/vacantspot", method = RequestMethod.POST)
