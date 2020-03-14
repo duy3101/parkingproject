@@ -5,11 +5,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix = "c"%>
 <%@page import="uwb.parkingproject.service.*"%>
 
-<%  QueryManager manager = new QueryManager();
-    System.out.println(manager.test());
-%> 
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "https://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
@@ -19,12 +14,12 @@
     <body>
     
     <h3>Hi ${Name}</h3>
-        <label for="ParkedCarTable">Current Parked Car Table</label>
+        <label for="ParkedCarTable"><strong>Current Parked Car Table</strong></label>
         <table border = "1" width = "50%" name = "ParkedCarTable">
             <tr>
-                <th>Start Time</th>
-                <th>Duration</th>
-                <th>Status</th>
+                <th>Parking Lot Name</th>
+                <th>Spot Number</th>
+                <th>Level</th>
             </tr>
 
             <c:forEach items="${parked_list}" var="row">

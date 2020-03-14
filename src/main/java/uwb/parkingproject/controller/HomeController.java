@@ -39,27 +39,72 @@ public class HomeController {
 	}
 
 
-
 	@RequestMapping(value = "/admin", method = RequestMethod.POST)
 	public String admin(Model model) {
 		
 		// university all payments that have not been paid in >=7 days
-		
 		// university can find current % of spots filled in each parking lot
-
 		// university can find current % of spots filled in each spot type
 
 	
 		return "admin";
 	}
 
+
+	@RequestMapping(value = "/admin_get_overdue_payments", method = RequestMethod.POST)
+	public String admin_get_overdue_payments(Model model) {
+		
+		try {
+			QueryManager manager = new QueryManager();
+			ArrayList<ReturnType> return_list = manager.GetOverduePayments();
+			model.addAttribute("return_list", return_list);
+		}
+		catch (Exception e) {
+			System.out.println("Database connection problem");
+        }
+		
+		return "admin_get_overdue_payments";
+	}
+
+
+	@RequestMapping(value = "/admin_get_percentage_of_lot", method = RequestMethod.POST)
+	public String admin_get_percentage_of_lot(Model model) {
+		
+		try {
+			QueryManager manager = new QueryManager();
+			ArrayList<ReturnType> return_list = manager.GetPercentageForLot();
+			model.addAttribute("return_list", return_list);
+		}
+		catch (Exception e) {
+			System.out.println("Database connection problem");
+        }
+
+		return "admin_get_percentage_of_lot";
+	}
+
+
+	@RequestMapping(value = "/admin_get_percentage_of_type", method = RequestMethod.POST)
+	public String admin_get_percentage_of_type(Model model) {
+		
+		try {
+			QueryManager manager = new QueryManager();
+			ArrayList<ReturnType> return_list = manager.GetPercentageForType();
+			model.addAttribute("return_list", return_list);
+		}
+		catch (Exception e) {
+			System.out.println("Database connection problem");
+        }
+	
+		return "admin_get_percentage_of_type";
+	}
+
+
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
 	public String user(@Validated User user, Model model) {
 		System.out.println("User Page Requested");
-
-		//  EnterVehicleInfo, update database
 		
 		this.user = user;
+
 
 		model.addAttribute("Name", this.user.getName());
 
@@ -69,32 +114,57 @@ public class HomeController {
 		ParkingLot2 find_spot_by_type = new ParkingLot2();
 		model.addAttribute("ParkingLot2", find_spot_by_type);
 
-	
+		if (user.getColor()==null) {
+			try {
+				QueryManager manager = new QueryManager();
+				ArrayList<ReturnType> return_list = manager.GetVehicleInfo(this.user.getPlate());
+				this.user.setColor(return_list.get(0).getStr1());
+				this.user.setManu(return_list.get(0).getStr2());
+				this.user.setModel(return_list.get(0).getStr3());
+				String car_type = manager.IntToCarType(Integer.parseInt(return_list.get(0).getStr4()));
+				this.user.setCarType(car_type);
+			}
+			catch (Exception e) {
+				System.out.println("Fail to get vehicle info");
+			}
+
+			try {
+				QueryManager manager = new QueryManager();
+				ArrayList<ReturnType> return_list = manager.GetParkedInfo(this.user.getPlate());
+				model.addAttribute("parked_list", return_list);
+			}
+			catch (Exception e) {
+				System.out.println("Fail to find vehicle parked info");
+			}
+		}
+
+		else {
+				 //EnterVehicleInfo, update database
+			try {
+				QueryManager manager = new QueryManager();
+				int car_type_to_int = manager.CarTypeToInt(user.getCarType());
+				manager.EnterVehicleInfo(user.getPlate(), user.getColor(), user.getManu(), user.getModel(), car_type_to_int);
+			}
+			catch (Exception e) {
+				System.out.println("Fail to add vehicle info");
+			}
+			
+			try {
+				QueryManager manager = new QueryManager();
+				ArrayList<ReturnType> return_list = manager.GetParkedInfo(this.user.getPlate());
+				model.addAttribute("parked_list", return_list);
+			}
+			catch (Exception e) {
+				System.out.println("Fail to find vehicle parked info");
+			}
+		}
+		
 		System.out.println(user.getPlate());
 		System.out.println(user.getColor());
 		System.out.println(user.getManu());
 		System.out.println(user.getModel());
+		System.out.println(user.getCarType());
 
-
-		//  EnterVehicleInfo, update database
-		try {
-			QueryManager manager = new QueryManager();
-			int car_type_to_int = manager.CarTypeToInt(user.getCarType());
-			manager.EnterVehicleInfo(user.getPlate(), user.getColor(), user.getManu(), user.getModel(), car_type_to_int);
-		}
-		catch (Exception e) {
-            System.out.println("Fail to add vehicle info");
-		}
-		
-		try {
-			QueryManager manager = new QueryManager();
-			ArrayList<ReturnType> return_list = manager.GetParkedInfo(this.user.getPlate());
-			model.addAttribute("parked_list", return_list);
-        }
-        catch (Exception e) {
-            System.out.println("Fail to find vehicle parked info");
-        }
-        
 		return "user";
 	}
 

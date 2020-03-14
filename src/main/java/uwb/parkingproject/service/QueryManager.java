@@ -123,6 +123,33 @@ public class QueryManager {
 
 	}
 
+
+	public ArrayList<ReturnType> GetVehicleInfo(String plateNumber) throws Exception{
+
+        String query = String.format("SELECT color, manufacturer, model, typeID FROM Vehicle WHERE LicensePlate = \"%s\";", plateNumber);
+		System.out.println(query);
+
+		ArrayList<ReturnType> return_table = new ArrayList<>();
+		ResultSet results;
+
+		try
+		{
+			Statement statement = this.connection.createStatement();
+			results = statement.executeQuery(query);
+			while (results.next())
+			{
+				ReturnType temp = new ReturnType(results.getString(1), results.getString(2), results.getString(3), results.getString(4));
+				return_table.add(temp);
+			}
+			return return_table;
+		}
+		catch (SQLException e)
+		{
+			throw new SQLException("Encountered an error when executing given sql statement", e);
+		}		
+
+	}
+
 	
 	// Check later for syntax issues and issues with multiple queries
 	public int ParkCar(String plateNumber, int spotNumber, int level, String lotName) throws Exception{
@@ -204,7 +231,7 @@ public class QueryManager {
 	public ArrayList<ReturnType> GetOverduePayments() throws Exception{
 
 
-        String query = String.format("SELECT LicensePlate, Duration, StartTime, Status FROM Payment WHERE (DATE_ADD(startTime, INTERVAL 7 DAY)) < datetime('now') ORDER BY startTime;");
+        String query = String.format("SELECT LicensePlate, Duration, StartTime, Status FROM Payment WHERE (DATE_ADD(startTime, INTERVAL 7 DAY)) < NOW() ORDER BY startTime;");
 		ResultSet results;
 		
 		ArrayList<ReturnType> return_table = new ArrayList<>();
@@ -304,6 +331,28 @@ public class QueryManager {
 		}
 		else {
 			return 6; // motocycle
+		}
+	}
+
+	public String IntToCarType (int typeID) {
+	
+		if (typeID == 1) {
+			return "Sedan";
+		}
+		else if (typeID == 2) {
+			return "Truck";
+		}
+		else if (typeID == 3) {
+			return "Compact";
+		}
+		else if (typeID == 4) {
+			return "SUV";
+		}
+		else if (typeID == 5) {
+			return "Hybird";
+		}
+		else {
+			return "Motocycle"; // motocycle
 		}
 	}
 

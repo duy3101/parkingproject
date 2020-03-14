@@ -12,7 +12,18 @@
     <input type="Submit" value="Admin" name="Admin">
 </form>
 
-<form action="user" method="post">
+<label for="existing-user"><strong>For Existing User:</strong></label>
+<form action="user" method="post" name="existing-user">
+    <label for="Plate">Plate Number:</label>
+    <input type="text" name="Plate"><br> 
+    <input type="submit" value="Login">
+</form>
+
+
+<br>
+
+<label for="new-user"><strong>For New User:</strong></label>
+<form action="user" method="post" name="new-user">
 
     <label for="Name">Name:</label>
     <input type="text" name="Name"><br> 
