@@ -15,10 +15,33 @@
     </head>
     <body>
     
-    <h3>Hi ${Name}</h3>
-    <h4>${lot_name}</h4>
 
-     <table border = "1" width = "50%">
+    <h3>Hi ${Name}</h3>
+    <h4>Current selected parking lot: ${lot_name}</h4>
+
+    <button onclick="goBack()">Go Back</button>
+    <script>
+        function goBack() {
+        window.history.back();
+        }
+    </script>
+
+    <br> 
+    <br>
+
+    <label for="UserInputForm">Input your desired parking here</label>
+    <form action="/user_input" method="post" name="UserInputForm">
+        <label for="ParkingLotName">Parking Lot Name:</label>
+        <input type="text" name="ParkingLotName"><br> 
+        <label for="Level">Level:</label>
+        <input type="text" name="Level"><br> 
+        <label for="SpotNumber">SpotNumber:</label>
+        <input type="text" name="SpotNumber"><br> 
+        <input type="submit" name="submit"/>
+    </form>
+
+
+    <table border = "1" width = "50%">
         <tr>
             <th>Spot Number</th>
             <th>Level</th>
@@ -28,11 +51,6 @@
             <tr>
             <td><c:out value = "${row.str1}"/></td>
             <td><c:out value = "${row.str2}"/></td>
-            <td>
-               <form name="ParkCar" action="user" >
-                <input type="submit" value="Select">
-               </form>
-            </td>
             </tr>
         </c:forEach>
     </table>

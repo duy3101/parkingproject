@@ -13,6 +13,29 @@
     
     <h3>Hi ${Name}</h3>
     <h4>${type_name}</h4>
+    
+
+    <button onclick="goBack()">Go Back</button>
+    <script>
+        function goBack() {
+        window.history.back();
+        }
+    </script>
+    
+    <br> 
+    <br>
+
+    <label for="UserInputForm">Input your desired parking here</label>
+    <form action="/user_input" method="post" name="UserInputForm">
+        <label for="ParkingLotName">Parking Lot Name:</label>
+        <input type="text" name="ParkingLotName"><br> 
+        <label for="Level">Level:</label>
+        <input type="text" name="Level"><br> 
+        <label for="SpotNumber">SpotNumber:</label>
+        <input type="text" name="SpotNumber"><br> 
+        <input type="submit" name="submit"/>
+    </form>
+
 
     <table border = "1" width = "50%">
         <tr>

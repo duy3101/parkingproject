@@ -70,10 +70,10 @@ public class HomeController {
 		model.addAttribute("ParkingLot2", find_spot_by_type);
 
 	
-		// System.out.println(user.getPlate());
-		// System.out.println(user.getColor());
-		// System.out.println(user.getManu());
-		// System.out.println(user.getModel());
+		System.out.println(user.getPlate());
+		System.out.println(user.getColor());
+		System.out.println(user.getManu());
+		System.out.println(user.getModel());
 
 
 		//  EnterVehicleInfo, update database
@@ -110,6 +110,10 @@ public class HomeController {
 		String lot_name = find_spot_by_lot.getParkingLotName();
 		model.addAttribute("lot_name", lot_name);
 
+		UserInput user_input_spot_by_lot = new UserInput();
+		model.addAttribute("user_input_by_lot", user_input_spot_by_lot);
+
+
 
 		try {
 			QueryManager manager = new QueryManager();
@@ -135,6 +139,8 @@ public class HomeController {
 		String type_name = find_spot_by_type.getParkingSpotType();
 		model.addAttribute("type_name", type_name);
 
+		UserInput user_input_spot_by_lot = new UserInput();
+		model.addAttribute("user_input_by_lot", user_input_spot_by_lot);
 
 		try {
 			QueryManager manager = new QueryManager();
@@ -147,6 +153,27 @@ public class HomeController {
 		return "vacantspotbytype";
 	}
 
+
+
+
+	@RequestMapping(value = "/user_input", method = RequestMethod.POST)
+	public String user_input(@ModelAttribute("user_input_by_lot") UserInput user_input_spot_by_lot, Model model) {
+
+		model.addAttribute("Name", this.user.getName());
+
+		try {
+			QueryManager manager = new QueryManager();
+
+			int spot_number = Integer.parseInt(user_input_spot_by_lot.getSpotNumber());
+			int level = Integer.parseInt(user_input_spot_by_lot.getLevel());
+			manager.ParkCar(this.user.getPlate(), spot_number, level, user_input_spot_by_lot.getParkingLotName());
+		}
+		catch (Exception e) {
+			System.out.println("Database connection problem");
+		}
+		
+		return "user_input";
+	}
 
 }
 
