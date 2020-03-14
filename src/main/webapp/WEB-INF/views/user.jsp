@@ -40,7 +40,8 @@
          <button type="submit">Click here to leave spot</button>
         </form>
 
-
+        <br>
+        <br>
 
         <form action="vacantspot" method="post">
         <label for="ParkingLotName">Find available spot from garage:</label>

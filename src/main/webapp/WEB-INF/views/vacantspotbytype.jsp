@@ -42,6 +42,7 @@
             <th>Spot Number</th>
             <th>Level</th>
             <th>Type</th>
+            <th>Parking Lot Name</th>
         </tr>
 
         <c:forEach items="${type_list}" var="row">
@@ -49,6 +50,7 @@
             <td><c:out value = "${row.str1}"/></td>
             <td><c:out value = "${row.str2}"/></td>
             <td><c:out value = "${row.str3}"/></td>
+            <td><c:out value = "${row.str4}"/></td>
             </tr>
         </c:forEach>
     </table>

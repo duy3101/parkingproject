@@ -78,7 +78,7 @@ public class QueryManager {
 	public ArrayList<ReturnType> GetVacantSpotFromType(String type_name) throws Exception{
 
 
-        String query = String.format("SELECT SpotNumber, Level, ParkingSpotType.Type FROM ParkingSpot JOIN ParkingSpotType ON (ParkingSpotType.ID = ParkingSpot.ParkingSpotTypeID) WHERE ParkingSpotType.Type = \"%s\" AND LicensePlate IS null ORDER BY SpotNumber, Level;", type_name);
+        String query = String.format("SELECT SpotNumber, Level, ParkingSpotType.Type, ParkingLot.Name FROM ParkingSpot JOIN ParkingSpotType ON (ParkingSpotType.ID = ParkingSpot.ParkingSpotTypeID) JOIN ParkingLot ON (ParkingSpot.ParkingLotID = ParkingLot.ID) WHERE ParkingSpotType.Type = \"%s\" AND LicensePlate IS null ORDER BY SpotNumber, Level;", type_name);
 		
 
 		ArrayList<ReturnType> return_table = new ArrayList<>();
@@ -89,7 +89,7 @@ public class QueryManager {
 			ResultSet results = statement.executeQuery(query);
 			while (results.next())
 			{
-				ReturnType temp = new ReturnType(results.getString(1), results.getString(2), results.getString(3));
+				ReturnType temp = new ReturnType(results.getString(1), results.getString(2), results.getString(3), results.getString(4));
 				return_table.add(temp);
 			}
 			return return_table;
