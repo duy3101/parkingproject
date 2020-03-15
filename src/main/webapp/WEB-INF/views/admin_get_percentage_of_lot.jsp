@@ -20,7 +20,7 @@
         <br>
         <br>
     
-        <label for="PercentageLotTable"><strong>Percentage Usage of Parking Lot Table</strong></label>
+        <label for="PercentageLotTable"><strong>Percentage of Open Parking Spot</strong></label>
         <table border = "1" width = "50%" name = "PercentageLotTable">
             <tr>
                 <th>Parking Lot Name</th>
