@@ -14,6 +14,7 @@
     <body>
     
     <h3>Hi ${Name}</h3>
+    <h3>Current log in plate: ${Plate}</h3>
         <label for="ParkedCarTable"><strong>Current Parked Car Table</strong></label>
         <table border = "1" width = "50%" name = "ParkedCarTable">
             <tr>

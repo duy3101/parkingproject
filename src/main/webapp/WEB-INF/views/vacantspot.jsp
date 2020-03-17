@@ -17,6 +17,8 @@
     
 
     <h3>Hi ${Name}</h3>
+    <h3>Current log in plate: ${Plate}</h3>
+
     <h4>Current selected parking lot: ${lot_name}</h4>
 
     <button onclick="goBack()">Go Back</button>

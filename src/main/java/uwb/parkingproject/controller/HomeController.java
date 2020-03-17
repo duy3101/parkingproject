@@ -108,7 +108,7 @@ public class HomeController {
 
 		model.addAttribute("Name", this.user.getName());
 
-		model.addAttribute("Plate", user.getPlate());
+		model.addAttribute("Plate", this.user.getPlate());
 		ParkingLot find_spot_by_lot = new ParkingLot();
 		model.addAttribute("ParkingLot", find_spot_by_lot);
 		ParkingLot2 find_spot_by_type = new ParkingLot2();
@@ -173,6 +173,8 @@ public class HomeController {
 	public String leave_spot(Model model) {
 		
 		model.addAttribute("Name", this.user.getName());
+		model.addAttribute("Plate", this.user.getPlate());
+
 
 		try {
 			QueryManager manager = new QueryManager();
@@ -187,6 +189,8 @@ public class HomeController {
 	@RequestMapping(value = "/vacantspot", method = RequestMethod.POST)
 	public String vacantspot(@ModelAttribute("ParkingLot") ParkingLot find_spot_by_lot, Model model) {
 		model.addAttribute("Name", this.user.getName());
+		model.addAttribute("Plate", this.user.getPlate());
+
 
 		System.out.println(find_spot_by_lot.getParkingLotName());
 
@@ -216,6 +220,8 @@ public class HomeController {
 	public String vacantspotbytype(@ModelAttribute("ParkingLot2") ParkingLot2 find_spot_by_type, Model model) {
 
 		model.addAttribute("Name", this.user.getName());
+		model.addAttribute("Plate", this.user.getPlate());
+
 
 		System.out.println(find_spot_by_type.getParkingSpotType());
 
@@ -243,6 +249,8 @@ public class HomeController {
 	public String user_input(@ModelAttribute("user_input_by_lot") UserInput user_input_spot_by_lot, Model model) {
 
 		model.addAttribute("Name", this.user.getName());
+		model.addAttribute("Plate", this.user.getPlate());
+
 
 		try {
 			QueryManager manager = new QueryManager();

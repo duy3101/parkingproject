@@ -12,7 +12,9 @@
     <body>
     
     <h3>Hi ${Name}</h3>
-    <h4>${type_name}</h4>
+    <h3>Current log in plate: ${Plate}</h3>
+
+    <h4>Current selected type: ${type_name}</h4>
     
 
     <button onclick="goBack()">Go Back</button>
