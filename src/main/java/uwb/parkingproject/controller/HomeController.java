@@ -251,13 +251,18 @@ public class HomeController {
 		model.addAttribute("Name", this.user.getName());
 		model.addAttribute("Plate", this.user.getPlate());
 
-
 		try {
 			QueryManager manager = new QueryManager();
 
 			int spot_number = Integer.parseInt(user_input_spot_by_lot.getSpotNumber());
 			int level = Integer.parseInt(user_input_spot_by_lot.getLevel());
-			manager.ParkCar(this.user.getPlate(), spot_number, level, user_input_spot_by_lot.getParkingLotName());
+			int is_error = manager.ParkCar(this.user.getPlate(), spot_number, level, user_input_spot_by_lot.getParkingLotName());
+			if (is_error == 0) {
+				model.addAttribute("Status", "Error! Please Try Another Spot");
+			}
+			else {
+				model.addAttribute("Status", "Successful");
+			}
 		}
 		catch (Exception e) {
 			System.out.println("Database connection problem");

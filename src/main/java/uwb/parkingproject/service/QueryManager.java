@@ -155,7 +155,7 @@ public class QueryManager {
 	public int ParkCar(String plateNumber, int spotNumber, int level, String lotName) throws Exception{
 
 
-        String query = String.format("UPDATE ParkingSpot SET ParkingSpot.LicensePlate = \"%1$s\" WHERE ParkingSpot.SpotNumber = \"%2$d\" AND ParkingSpot.Level = \"%3$d\" AND ParkingSpot.ParkingLotID IN (SELECT ParkingLot.ID FROM ParkingLot WHERE ParkingLot.name = \"%4$s\"); ", plateNumber, spotNumber, level, lotName);
+        String query = String.format("UPDATE ParkingSpot SET ParkingSpot.LicensePlate = \"%1$s\" WHERE ParkingSpot.LicensePlate IS NULL AND ParkingSpot.SpotNumber = \"%2$d\" AND ParkingSpot.Level = \"%3$d\" AND ParkingSpot.ParkingLotID IN (SELECT ParkingLot.ID FROM ParkingLot WHERE ParkingLot.name = \"%4$s\"); ", plateNumber, spotNumber, level, lotName);
 		String query2 = String.format("INSERT INTO Payment (LicensePlate, Duration, StartTime, Status) VALUES (\"%s\", 0, NOW(), False);", plateNumber);
 
 		System.out.println(query);
@@ -164,10 +164,14 @@ public class QueryManager {
 		try
 		{
 			Statement statement = this.connection.createStatement();
-			statement.executeUpdate(query);
-			System.out.println("passed first query");
-			statement.executeUpdate(query2);
-			return 1;
+			int result_1 = statement.executeUpdate(query);
+			// System.out.println("result_1 " + result_1);
+			// System.out.println("passed first query");
+			if (result_1 == 1) {
+				statement.executeUpdate(query2);
+
+			} 
+			return result_1;
 
 		}
 		catch (SQLException e)
